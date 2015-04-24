@@ -53,25 +53,8 @@ class Clusterer
   end
 
   def recenter_clusters
-    # move each cluster to the center of its members
-    @moved = false
-
     @clusters.each do |cluster|
-      new_cluster_center = []
-      cluster.center.each_with_index do |old_vector, index|
-        new_cluster_center = []
-        total = cluster.members.inject(0) do |memo, member|
-          memo + member.vectors[index]
-        end
-
-        new_vector = total / cluster.members.length
-
-        @moved = true unless  new_vector == old_vector
-
-        new_cluster_center << new_vector
-      end
-
-      cluster.center = new_cluster_center
+      cluster.move_to_center_of_members
     end
   end
 
@@ -89,16 +72,20 @@ class Clusterer
     end
   end
 
+  def clusters_moved
+    @clusters.any? do |cluster|
+      cluster.moved
+    end
+  end
+
   def cluster
     create_clusters
 
     first_assignment
 
     iterations = 0;
-    @moved = true
 
-
-    while @moved do 
+    while clusters_moved do 
       iterations += 1
 
       recenter_clusters

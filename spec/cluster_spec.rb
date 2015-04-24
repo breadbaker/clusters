@@ -30,4 +30,25 @@ describe Cluster  do
       distance.should be Math.sqrt(3)
     end
   end
+  describe "move_to_center_of_members" do
+    it "can calculate center" do
+      @cluster.center = [0.0, 0.0, 0.0]
+      point_1 = Point.new({
+        vectors: [1.0, 1.0, 1.0]
+      })
+      point_2 = Point.new({
+        vectors: [1.0, 1.0, 1.0]
+      })
+      point_3 = Point.new({
+        vectors: [1.0, 1.0, 1.0]
+      })
+      @cluster.members = [point_1, point_2, point_3]
+
+      @cluster.move_to_center_of_members
+      @cluster.moved.should eq true
+      @cluster.center.should eq [1.0, 1.0, 1.0]
+      @cluster.move_to_center_of_members
+      @cluster.mov
+    end
+  end
 end
