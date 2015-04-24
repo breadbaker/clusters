@@ -114,7 +114,10 @@ describe Normalizer do
 
         normalized[:normalized_outputs].length.should eq 31
 
-        normalized[:normalized_outputs][0].length.should eq 2
+        normalized[:normalized_outputs].each do |output|
+          output.length.should eq 2
+        end
+        normalized[:outputs].uniq.length.should eq 2
         normalized[:normalized_inputs][0].length.should eq 3
       end
     end

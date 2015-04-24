@@ -95,4 +95,17 @@ describe ClustererWrapNumber  do
       end
     end
   end
+
+  describe "cluster" do
+
+    before :each do
+      @clusterer.cluster
+      @clusterer.test
+    end
+    it "cluster centers have members" do
+      @clusterer.clusters.each do |cluster|
+        cluster.members.length.should be > 0
+      end
+    end
+  end
 end

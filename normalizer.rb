@@ -77,6 +77,11 @@ module Normalizer
     normalized_outputs = []
 
     @match_index ||= data[0].length - 1
+
+    column_groups[@match_index] = column_groups[@match_index].map do |el|
+      el.gsub(/\s+/, "")
+    end
+    
     column_groups.each_with_index do |column, index|
       if index == @match_index
         normalized_outputs = normalize_column(column, index, true)
