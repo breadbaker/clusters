@@ -11,32 +11,6 @@ describe Normalizer do
   }
 
   describe "normalize_numeric" do
-    # def normalize_numeric(data_group, index)
-    #   @numeric_columns += 1
-    #   data_group = data_group.map do |el|
-    #     el.to_f
-    #   end
-    #   max = data_group.max
-    #   min = data_group.min
-
-    #   # puts "index #{index} max #{max}"
-    #   # puts "index #{index} min #{min}"
-
-    #   normalized = data_group.map do |el|
-    #     [(el - min) / (max - min)]
-    #   end
-
-    #   # puts "data #{data_group[0]}  norm #{normalized[0]}"
-
-    #   normalized.each do |n|
-    #     if n[0].nan?
-    #       puts "index #{index} #{data_group}"
-    #       fail
-    #     end
-    #   end
-
-    #   normalized
-    # end
     before :each do 
       wrap.numeric_columns = 0
     end
@@ -90,17 +64,6 @@ describe Normalizer do
     before :each do 
       wrap.descrete_columns = 0
     end
-    # def normalize_descrete(data_group, 0)
-    #   @descrete_columns += 1
-    #   uniq = data_group.uniq
-
-    #   data_group.map do |el|
-    #     options = Array.new(uniq.length, 0)
-    #     options[uniq.index(el)] = 1
-
-    #     options
-    #   end
-    # end 
 
     it " with data" do
       data_group = ['A', 'A', 'B', 'C']
@@ -136,28 +99,6 @@ describe Normalizer do
     end
 
     describe "get_data" do
-      # def get_data
-      #   lines = []
-      #   File.open(@file_path, "r") do |f|
-      #     f.each_line do |line|
-      #       line  = line.split(@splitter)
-      #       @omit_indexes.each do |del|
-      #           line.delete_at(del)
-      #       end
-      #       line = line.map do |i|
-      #         i.delete(' ')
-      #       end
-      #       lines << line
-      #     end
-      #   end
-      #   @lines = check_if_title_row(lines)
-
-      #   @lines = @lines.shuffle if @pre_scramble
-
-      #   unless @num_lines.nil?
-      #     @lines = @lines.slice(0, @num_lines)
-      #   end
-      # end
       it "read data from file" do
         @obj.get_data
 
@@ -166,33 +107,6 @@ describe Normalizer do
     end
 
     describe "normalize" do
-      # def normalize(data)
-      #   column_groups = data.safe_transpose
-
-      #   normalized_column_groups = []
-      #   normalized_outputs = []
-
-      #   @match_index ||= data[0].length - 1
-      #   column_groups.each_with_index do |column, index|
-      #     if index == @match_index
-      #       normalized_outputs = normalize_column(column, index, true)
-      #     else
-      #       normalized_column_groups << normalize_column(column, index, false)
-      #     end
-      #   end
-
-      #   data_groups_normalized = normalized_column_groups.safe_transpose
-
-      #   normalized_inputs = data_groups_normalized.map do |group|
-      #     group.flatten.compact
-      #   end
-
-      #   {
-      #     normalized_outputs: normalized_outputs,
-      #     outputs: column_groups[@match_index],
-      #     normalized_inputs: normalized_inputs
-      #   }
-      # end
       it "normalize number data" do
         @obj.get_data
 
@@ -202,7 +116,6 @@ describe Normalizer do
 
         normalized[:normalized_outputs][0].length.should eq 2
         normalized[:normalized_inputs][0].length.should eq 3
-
       end
     end
   end

@@ -1,6 +1,8 @@
 require 'rspec'
 require '../normalizer.rb'
 require '../cluster.rb'
+require '../clusterer.rb'
+require '../point.rb'
 
 class ClustererWrapNumber < Clusterer
   # 2,2,4,L
@@ -91,28 +93,6 @@ describe ClustererWrapNumber  do
       @clusterer.clusters.each do |cluster|
         cluster.members.length.should be > 0
       end
-    end
-  end
-
-  describe "calculate_distance_to_cluster" do
-    # def calculate_distance_to_cluster(point, cluster)
-    #   total_distance = 0
-
-
-    #   cluster.center.each_with_index do |vector, index|
-    #     total_distance += (vector - point.vectors[index]) ** 2
-    #   end
-
-    #   Math.sqrt(total_distance)
-    # end
-    it "can calculate <distance></distance>" do
-      cluster = Cluster.new
-      cluster.center = [0.0, 0.0, 0.0]
-      point = Point.new({
-        vectors: [1.0, 1.0, 1.0]
-      })
-      distance = @clusterer.calculate_distance_to_cluster(point, cluster)
-      distance.should be Math.sqrt(3)
     end
   end
 end

@@ -1,4 +1,3 @@
-
 class Array
   def safe_transpose
     result = []
@@ -115,14 +114,9 @@ module Normalizer
     max = data_group.max
     min = data_group.min
 
-    # puts "index #{index} max #{max}"
-    # puts "index #{index} min #{min}"
-
     normalized = data_group.map do |el|
       [(el - min) / (max - min)]
     end
-
-    # puts "data #{data_group[0]}  norm #{normalized[0]}"
 
     normalized.each do |n|
       if n[0].nan?
