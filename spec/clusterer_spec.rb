@@ -16,6 +16,14 @@ class ClustererWrapNumber < Clusterer
     @k = 2
     super
   end
+  def test
+    @clusters.each do |cluster|
+      puts cluster.members.length
+      cluster.center.each do |pt|
+        puts "#{pt}"
+      end
+    end
+  end
 end
 
 describe ClustererWrapNumber  do

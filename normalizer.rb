@@ -24,7 +24,9 @@ module Normalizer
     @results_path ||= './results'
     @pre_scramble ||= false
     @splitter ||= ';'
+    @no_match ||= false
     @numeric_columns = 0
+    @id_attr ||= nil
     @descrete_columns = 0
     @omit_indexes ||= []
     @num_lines ||= nil
@@ -79,11 +81,15 @@ module Normalizer
     @match_index ||= data[0].length - 1
 
     column_groups[@match_index] = column_groups[@match_index].map do |el|
-      el.gsub(/\s+/, "")
+      el.gsub(/\s+/, "") if el
     end
-    
+
+    ids = []
+
     column_groups.each_with_index do |column, index|
-      if index == @match_index
+      if @id_attr && @id_attr == index
+        ids = column
+      elsif index == @match_index && !@no_match
         normalized_outputs = normalize_column(column, index, true)
       else
         normalized_column_groups << normalize_column(column, index, false)
@@ -97,6 +103,7 @@ module Normalizer
     end
 
     {
+      ids: ids,
       normalized_outputs: normalized_outputs,
       outputs: column_groups[@match_index],
       normalized_inputs: normalized_inputs
@@ -135,6 +142,7 @@ module Normalizer
 
   def normalize_descrete(data_group, index)
     @descrete_columns += 1
+    puts "file #{@file_path}"
     data_group = data_group.map do |el|
       el.gsub(/\s+/, "")
     end

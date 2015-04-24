@@ -22,7 +22,9 @@ class Clusterer
     @points = []
 
     norm[:normalized_inputs].each_with_index do |input, index|
+
       point = Point.new({
+        id: norm[:ids][index],
         vectors: input,
         output_normalized: norm[:normalized_outputs][index],
         output: norm[:outputs][index]
@@ -40,15 +42,7 @@ class Clusterer
 
   def test
     @clusters.each do |cluster|
-      cluster.outputs = {}
-      cluster.members.each do |member|
-        if cluster.outputs.has_key?(member.output)
-          cluster.outputs[member.output] += 1
-        else
-          cluster.outputs[member.output] = 1
-        end
-      end
-      puts cluster.outputs
+      puts cluster.members.length
     end
   end
 
