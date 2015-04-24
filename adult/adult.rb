@@ -11,7 +11,7 @@ class Adult < Clusterer
     @pre_scramble = true
     @results_path ||= './results'
     @k = 2
-    @num_lines = 300
+    @num_lines = 3000
     super
   end
 end
