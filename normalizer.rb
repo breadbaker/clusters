@@ -1,3 +1,4 @@
+
 class Array
   def safe_transpose
     result = []
@@ -18,16 +19,16 @@ end
 
 module Normalizer
 
-  attr_reader :train, :test, :maxes, :fann
+  attr_accessor :train, :test, :maxes, :fann, :numeric_columns, :descrete_columns, :lines
   def prepare(opt = {})
     @file_path ||= './winequality-red.csv'
     @results_path ||= './results'
     @pre_scramble ||= false
     @splitter ||= ';'
     @numeric_columns = 0
-    @num_lines ||= nil
     @descrete_columns = 0
     @omit_indexes ||= []
+    @num_lines ||= nil
     @special_normalize ||= {}
   end
 
@@ -45,9 +46,6 @@ module Normalizer
         lines << line
       end
     end
-
-    puts "file loaded #{lines.length} lines"
-    puts "line one #{lines[0]}"
 
     @lines = check_if_title_row(lines)
 
@@ -75,9 +73,7 @@ module Normalizer
 
   def normalize(data)
     column_groups = data.safe_transpose
-    puts "transposed"
 
-    # puts column_groups[0][0]
     normalized_column_groups = []
     normalized_outputs = []
 
@@ -88,17 +84,9 @@ module Normalizer
       else
         normalized_column_groups << normalize_column(column, index, false)
       end
-
-      # puts "normalized #{index}"
     end
 
-    puts "descrete_columns #{@descrete_columns}"
-    puts "numeric_columns #{@numeric_columns}"
-    puts "retransposing #{normalized_column_groups.length} rows with #{normalized_column_groups[0].length} columns"
-
     data_groups_normalized = normalized_column_groups.safe_transpose
-
-    puts "retransposed #{data_groups_normalized.length} rows"
 
     normalized_inputs = data_groups_normalized.map do |group|
       group.flatten.compact
@@ -136,11 +124,21 @@ module Normalizer
 
     # puts "data #{data_group[0]}  norm #{normalized[0]}"
 
+    normalized.each do |n|
+      if n[0].nan?
+        puts "index #{index} #{data_group}"
+        fail
+      end
+    end
+
     normalized
   end
 
   def normalize_descrete(data_group, index)
     @descrete_columns += 1
+    data_group = data_group.map do |el|
+      el.gsub(/\s+/, "")
+    end
     uniq = data_group.uniq
 
     data_group.map do |el|
